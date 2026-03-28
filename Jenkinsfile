@@ -1,25 +1,20 @@
 pipeline {
     agent any
-
     environment {
         DOCKER_IMAGE = "srikrishnaedu18docker/java-app"
         KUBECONFIG = "/home/jenkins/.kube/config"
     }
-
     stages {
-
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-
         stage('Docker Build') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
-
         stage('Docker Push') {
             steps {
                 withCredentials([usernamePassword(
@@ -35,7 +30,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
