@@ -1,0 +1,99 @@
+SCRAPED CODE  —  2026-03-28 09:28:07
+Base directory: /home/krishna/Desktop/Code/agile/simple-java-app
+Total files: 4
+======================================================================
+
+
+======================================================================
+FILE: deployment.yaml
+======================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+      - name: java-app
+        image: srikrishnaedu18docker/java-app:latest
+        ports:
+        - containerPort: 8080
+
+======================================================================
+FILE: pom.xml
+======================================================================
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>simple-java-app</artifactId>
+    <version>1.0</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+======================================================================
+FILE: service.yaml
+======================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-app-service
+spec:
+  type: NodePort
+  selector:
+    app: java-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30007
+
+======================================================================
+FILE: src/main/java/App.java
+======================================================================
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello from Jenkins CI/CD 🚀");
+    }
+}
